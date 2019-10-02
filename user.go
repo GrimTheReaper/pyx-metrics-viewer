@@ -34,22 +34,26 @@ import (
 
 var getUserSessionsStmt *sql.Stmt
 
+// SessionBasics holds the time the session logged in and its id
 type SessionBasics struct {
 	SessionId      string
 	LogInTimestamp int64
 }
 
+// UserMeta holds information about the sessions
 type UserMeta struct {
 	Sessions []SessionBasics
 }
 
 type userHandler struct{}
 
+// FormattedTimestamp will format the unix timestamp to a RFC1123 formatted string
 func (session *SessionBasics) FormattedTimestamp() string {
 	//	return time.Unix(session.LogInTimestamp, 0).UTC().Format("Mon, 02 Jan 2006 15:04:05") + " PDT -0700"
 	return time.Unix(session.LogInTimestamp, 0).UTC().Format(time.RFC1123)
 }
 
+// ServerId brings back the current server id from the session id
 func (session *SessionBasics) ServerId() string {
 	return strings.Split(session.SessionId, "_")[0]
 }

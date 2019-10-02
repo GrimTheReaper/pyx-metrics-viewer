@@ -38,6 +38,7 @@ var getSessionPlayedRoundsStmt *sql.Stmt
 var getSessionJudgedRoundsStmt *sql.Stmt
 var getSessionRoundCountsStmt *sql.Stmt
 
+// SessionMeta holds information about the session meta
 type SessionMeta struct {
 	LogInTimestamp int64
 	PersistentId   string
@@ -46,6 +47,7 @@ type SessionMeta struct {
 	JudgedRounds   []RoundMeta
 }
 
+// SessionCounts holds the metrics for the amount of played and judged rounds
 type SessionCounts struct {
 	SessionId        string
 	PlayedRoundCount int
@@ -54,6 +56,7 @@ type SessionCounts struct {
 
 type sessionHandler struct{}
 
+// FormattedTimestamp will format the unix timestamp to a RFC1123 formatted string
 func (session *SessionMeta) FormattedTimestamp() string {
 	//	return time.Unix(session.LogInTimestamp, 0).UTC().Format("Mon, 02 Jan 2006 15:04:05") + " PDT -0700"
 	return time.Unix(session.LogInTimestamp, 0).UTC().Format(time.RFC1123)

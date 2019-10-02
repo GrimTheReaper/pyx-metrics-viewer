@@ -35,18 +35,21 @@ import (
 var getRoundWhiteCards *sql.Stmt
 var getRoundInfo *sql.Stmt
 
+// CardMeta holds information about the card meta
 type CardMeta struct {
 	Color string
 	Draw  int16 `json:",omitempty"`
 	Pick  int16 `json:",omitempty"`
 }
 
+// Card holds the information about the card
 type Card struct {
 	Text      string
 	Watermark string
 	Meta      CardMeta
 }
 
+// Round wholds information about the round
 type Round struct {
 	GameId      string
 	BlackCard   Card
@@ -57,6 +60,7 @@ type Round struct {
 
 type roundHandler struct{}
 
+// FormattedTimestamp will format the unix timestamp to a RFC1123 formatted string
 func (round *Round) FormattedTimestamp() string {
 	//	return time.Unix(round.Timestamp, 0).UTC().Format("Mon, 02 Jan 2006 15:04:05") + " PDT -0700"
 	return time.Unix(round.Timestamp, 0).UTC().Format(time.RFC1123)

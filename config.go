@@ -27,15 +27,17 @@ import (
 	"github.com/koding/multiconfig"
 )
 
-type DbConfig struct {
+// DBConfig is a configuration object for the database
+type DBConfig struct {
 	Username string `required:"true"`
 	Password string `required:"true"`
 	DbName   string `required:"true"`
 	Host     string
 }
 
+// Config is an object that represents our configuration
 type Config struct {
-	Database       DbConfig
+	Database       DBConfig
 	LogLevel       string
 	RunDebugServer bool
 	FilteredText   []string `required:"true"`
@@ -51,10 +53,10 @@ func loadConfig() *Config {
 }
 
 func (c *Config) ensureDefaults() {
-	c.Database.ensureDbDefaults()
+	c.Database.ensureDBDefaults()
 }
 
-func (config *DbConfig) ensureDbDefaults() {
+func (config *DBConfig) ensureDBDefaults() {
 	if config.Host == "" {
 		config.Host = "localhost"
 	}
