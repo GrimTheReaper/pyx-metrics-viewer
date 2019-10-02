@@ -27,21 +27,23 @@ import (
 	"github.com/koding/multiconfig"
 )
 
-// DBConfig is a configuration object for the database
-type DBConfig struct {
-	Username string `required:"true"`
-	Password string `required:"true"`
-	DbName   string `required:"true"`
-	Host     string
-}
+type (
+	// DBConfig is a configuration object for the database
+	DBConfig struct {
+		Username string `required:"true"`
+		Password string `required:"true"`
+		DbName   string `required:"true"`
+		Host     string
+	}
 
-// Config is an object that represents our configuration
-type Config struct {
-	Database       DBConfig
-	LogLevel       string
-	RunDebugServer bool
-	FilteredText   []string `required:"true"`
-}
+	// Config is an object that represents our configuration
+	Config struct {
+		Database       DBConfig
+		LogLevel       string
+		RunDebugServer bool
+		FilteredText   []string `required:"true"`
+	}
+)
 
 func loadConfig() *Config {
 	m := multiconfig.NewWithPath("pyx-metrics-viewer.toml")

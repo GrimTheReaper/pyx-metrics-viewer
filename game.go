@@ -34,30 +34,30 @@ import (
 
 var getGameRoundsStmt *sql.Stmt
 
-// RoundMeta holds meta information about the round
-type RoundMeta struct {
-	RoundID   string
-	Timestamp int64
-	BlackCard Card
-}
+type (
+	// RoundMeta holds meta information about the round
+	RoundMeta struct {
+		RoundID   string
+		Timestamp int64
+		BlackCard Card
+	}
 
-// GameMeta holds meta information about the game
-type GameMeta struct {
-	GameID    string
-	Timestamp int64
-}
+	// GameMeta holds meta information about the game
+	GameMeta struct {
+		GameID    string
+		Timestamp int64
+	}
 
-type gameHandler struct{}
+	gameHandler struct{}
+)
 
 // FormattedTimestamp will format the unix timestamp to a RFC1123 formatted string
 func (round *RoundMeta) FormattedTimestamp() string {
-	//	return time.Unix(round.Timestamp, 0).UTC().Format("Mon, 02 Jan 2006 15:04:05") + " PDT -0700"
 	return time.Unix(round.Timestamp, 0).UTC().Format(time.RFC1123)
 }
 
 // FormattedTimestamp will format the unix timestamp to a RFC1123 formatted string
 func (game *GameMeta) FormattedTimestamp() string {
-	//	return time.Unix(game.Timestamp, 0).UTC().Format("Mon, 02 Jan 2006 15:04:05") + " PDT -0700"
 	return time.Unix(game.Timestamp, 0).UTC().Format(time.RFC1123)
 }
 

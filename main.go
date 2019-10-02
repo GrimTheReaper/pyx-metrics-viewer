@@ -37,16 +37,17 @@ import (
 	"github.com/op/go-logging"
 )
 
-var log = logging.MustGetLogger("main")
-var logFormat = logging.MustStringFormatter(`%{color}%{time:15:04:05.000} %{level:.5s} %{id:03x} %{shortfunc} (%{shortfile}) %{color:reset}>%{message}`)
-var config *Config
+var (
+	log       = logging.MustGetLogger("main")
+	logFormat = logging.MustStringFormatter(`%{color}%{time:15:04:05.000} %{level:.5s} %{id:03x} %{shortfunc} (%{shortfile}) %{color:reset}>%{message}`)
+	config    *Config
+	handlers  []endpointHandler
+)
 
 type endpointHandler interface {
 	prepareStatements(*sql.DB) error
 	registerEndpoints(*gin.Engine)
 }
-
-var handlers []endpointHandler
 
 func registerHandler(handler endpointHandler) {
 	handlers = append(handlers, handler)

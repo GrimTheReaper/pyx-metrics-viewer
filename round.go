@@ -32,37 +32,40 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var getRoundWhiteCards *sql.Stmt
-var getRoundInfo *sql.Stmt
+var (
+	getRoundWhiteCards *sql.Stmt
+	getRoundInfo       *sql.Stmt
+)
 
-// CardMeta holds information about the card meta
-type CardMeta struct {
-	Color string
-	Draw  int16 `json:",omitempty"`
-	Pick  int16 `json:",omitempty"`
-}
+type (
+	// CardMeta holds information about the card meta
+	CardMeta struct {
+		Color string
+		Draw  int16 `json:",omitempty"`
+		Pick  int16 `json:",omitempty"`
+	}
 
-// Card holds the information about the card
-type Card struct {
-	Text      string
-	Watermark string
-	Meta      CardMeta
-}
+	// Card holds the information about the card
+	Card struct {
+		Text      string
+		Watermark string
+		Meta      CardMeta
+	}
 
-// Round wholds information about the round
-type Round struct {
-	GameID      string
-	BlackCard   Card
-	WinningPlay []Card
-	OtherPlays  [][]Card
-	Timestamp   int64
-}
+	// Round wholds information about the round
+	Round struct {
+		GameID      string
+		BlackCard   Card
+		WinningPlay []Card
+		OtherPlays  [][]Card
+		Timestamp   int64
+	}
 
-type roundHandler struct{}
+	roundHandler struct{}
+)
 
 // FormattedTimestamp will format the unix timestamp to a RFC1123 formatted string
 func (round *Round) FormattedTimestamp() string {
-	//	return time.Unix(round.Timestamp, 0).UTC().Format("Mon, 02 Jan 2006 15:04:05") + " PDT -0700"
 	return time.Unix(round.Timestamp, 0).UTC().Format(time.RFC1123)
 }
 
