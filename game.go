@@ -36,14 +36,14 @@ var getGameRoundsStmt *sql.Stmt
 
 // RoundMeta holds meta information about the round
 type RoundMeta struct {
-	RoundId   string
+	RoundID   string
 	Timestamp int64
 	BlackCard Card
 }
 
 // GameMeta holds meta information about the game
 type GameMeta struct {
-	GameId    string
+	GameID    string
 	Timestamp int64
 }
 
@@ -91,13 +91,15 @@ func getGame(c *gin.Context) {
 	defer q.Close()
 	rounds := []RoundMeta{}
 	for q.Next() {
-		var text string
-		var watermark string
-		var pick int16
-		var draw int16
-		var roundId string
-		var timestamp time.Time
-		q.Scan(&text, &watermark, &pick, &draw, &roundId, &timestamp)
+		var (
+			text      string
+			watermark string
+			pick      int16
+			draw      int16
+			roundID   string
+			timestamp time.Time
+		)
+		q.Scan(&text, &watermark, &pick, &draw, &roundID, &timestamp)
 		rounds = append(rounds, RoundMeta{
 			BlackCard: Card{
 				Text:      text,
@@ -108,7 +110,7 @@ func getGame(c *gin.Context) {
 					Pick:  pick,
 				},
 			},
-			RoundId:   roundId,
+			RoundID:   roundID,
 			Timestamp: timestamp.Unix(),
 		})
 	}

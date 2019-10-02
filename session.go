@@ -41,7 +41,7 @@ var getSessionRoundCountsStmt *sql.Stmt
 // SessionMeta holds information about the session meta
 type SessionMeta struct {
 	LogInTimestamp int64
-	PersistentId   string
+	PersistentID   string
 	Games          []GameMeta
 	PlayedRounds   []RoundMeta
 	JudgedRounds   []RoundMeta
@@ -49,7 +49,7 @@ type SessionMeta struct {
 
 // SessionCounts holds the metrics for the amount of played and judged rounds
 type SessionCounts struct {
-	SessionId        string
+	SessionID        string
 	PlayedRoundCount int
 	JudgedRoundCount int
 }
@@ -144,7 +144,7 @@ func getSession(c *gin.Context) {
 		return
 	}
 	var timestamp time.Time
-	q.Scan(&timestamp, &session.PersistentId)
+	q.Scan(&timestamp, &session.PersistentID)
 	session.LogInTimestamp = timestamp.Unix()
 	session.PlayedRounds, err = getSessionRounds(getSessionPlayedRoundsStmt.Query(c.Param("id")))
 	if err != nil {
@@ -164,11 +164,13 @@ func getSession(c *gin.Context) {
 	}
 	defer q.Close()
 	for q.Next() {
-		var gameId string
-		var timestamp time.Time
-		q.Scan(&gameId, &timestamp)
+		var (
+			gameID    string
+			timestamp time.Time
+		)
+		q.Scan(&gameID, &timestamp)
 		session.Games = append(session.Games, GameMeta{
-			GameId:    gameId,
+			GameID:    gameID,
 			Timestamp: timestamp.Unix(),
 		})
 	}
@@ -190,13 +192,15 @@ func getSessionRounds(q *sql.Rows, err error) ([]RoundMeta, error) {
 	}
 	defer q.Close()
 	for q.Next() {
-		var text string
-		var watermark string
-		var pick int16
-		var draw int16
-		var roundId string
-		var timestamp time.Time
-		q.Scan(&text, &watermark, &pick, &draw, &roundId, &timestamp)
+		var (
+			text      string
+			watermark string
+			pick      int16
+			draw      int16
+			roundID   string
+			timestamp time.Time
+		)
+		q.Scan(&text, &watermark, &pick, &draw, &roundID, &timestamp)
 		rounds = append(rounds, RoundMeta{
 			BlackCard: Card{
 				Text:      text,
@@ -207,7 +211,7 @@ func getSessionRounds(q *sql.Rows, err error) ([]RoundMeta, error) {
 					Pick:  pick,
 				},
 			},
-			RoundId:   roundId,
+			RoundID:   roundID,
 			Timestamp: timestamp.Unix(),
 		})
 	}
@@ -225,7 +229,7 @@ func getSessionStats(c *gin.Context) {
 	defer q.Close()
 
 	counts := SessionCounts{
-		SessionId: c.Param("id"),
+		SessionID: c.Param("id"),
 	}
 	if !q.Next() {
 		msg := "ID not found"

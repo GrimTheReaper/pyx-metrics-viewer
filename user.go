@@ -36,7 +36,7 @@ var getUserSessionsStmt *sql.Stmt
 
 // SessionBasics holds the time the session logged in and its id
 type SessionBasics struct {
-	SessionId      string
+	SessionID      string
 	LogInTimestamp int64
 }
 
@@ -53,9 +53,9 @@ func (session *SessionBasics) FormattedTimestamp() string {
 	return time.Unix(session.LogInTimestamp, 0).UTC().Format(time.RFC1123)
 }
 
-// ServerId brings back the current server id from the session id
-func (session *SessionBasics) ServerId() string {
-	return strings.Split(session.SessionId, "_")[0]
+// ServerID brings back the current server id from the session id
+func (session *SessionBasics) ServerID() string {
+	return strings.Split(session.SessionID, "_")[0]
 }
 
 func init() {
@@ -87,11 +87,13 @@ func getUser(c *gin.Context) {
 	defer q.Close()
 	user := UserMeta{}
 	for q.Next() {
-		var sessionId string
-		var timestamp time.Time
-		q.Scan(&sessionId, &timestamp)
+		var (
+			sessionID string
+			timestamp time.Time
+		)
+		q.Scan(&sessionID, &timestamp)
 		user.Sessions = append(user.Sessions, SessionBasics{
-			SessionId:      sessionId,
+			SessionID:      sessionID,
 			LogInTimestamp: timestamp.Unix(),
 		})
 	}

@@ -51,7 +51,7 @@ type Card struct {
 
 // Round wholds information about the round
 type Round struct {
-	GameId      string
+	GameID      string
 	BlackCard   Card
 	WinningPlay []Card
 	OtherPlays  [][]Card
@@ -103,17 +103,19 @@ func getRound(c *gin.Context) {
 		return
 	}
 	defer info.Close()
-	var blackText string
-	var blackWatermark string
-	var pick int16
-	var draw int16
-	var gameId string
-	var timestamp time.Time
+	var (
+		blackText      string
+		blackWatermark string
+		pick           int16
+		draw           int16
+		gameID         string
+		timestamp      time.Time
+	)
 	if !info.Next() {
 		returnError(c, 404, "That round cannot be found. If you just played it, wait a few seconds and try again.")
 		return
 	}
-	info.Scan(&blackText, &blackWatermark, &pick, &draw, &gameId, &timestamp)
+	info.Scan(&blackText, &blackWatermark, &pick, &draw, &gameID, &timestamp)
 	round := Round{
 		BlackCard: Card{
 			Text:      blackText,
@@ -124,7 +126,7 @@ func getRound(c *gin.Context) {
 				Pick:  pick,
 			},
 		},
-		GameId:    gameId,
+		GameID:    gameID,
 		Timestamp: timestamp.Unix(),
 	}
 	info.Close()
