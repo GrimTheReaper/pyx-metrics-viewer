@@ -29,30 +29,27 @@
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="pyx.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="pyx.css" media="screen" />
     <title>PYX Round</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="text/babel">
-
       function GameName(props) {
         if (props.draw > 0 || props.pick > 1) {
-          return <div className="logo_text">PYX</div>
+          return <div className="logo_text">PYX</div>;
         } else {
-          return <div className="logo_text">Pretend You&apos;re Xyzzy</div>
+          return <div className="logo_text">Pretend You&apos;re Xyzzy</div>;
         }
       }
 
       function CardFooter(props) {
         return (
           <div className="logo">
-            <div className="logo_1 logo_element">
-            </div>
-            <div className="logo_2 logo_element">
-            </div>
+            <div className="logo_1 logo_element"></div>
+            <div className="logo_2 logo_element"></div>
             <div className="logo_3 logo_element watermark_container">
-              <br/>
+              <br />
               <span className="watermark">{props.watermark}</span>
             </div>
             <GameName {...props} />
@@ -62,17 +59,25 @@
 
       function Pick(props) {
         if (props.pick > 1) {
-          return <div className="pick">PICK <div className="card_number">{props.pick}</div></div>
+          return (
+            <div className="pick">
+              PICK <div className="card_number">{props.pick}</div>
+            </div>
+          );
         } else {
-          return <div className="draw hide"></div>
+          return <div className="draw hide"></div>;
         }
       }
 
       function Draw(props) {
         if (props.draw > 0) {
-          return <div className="draw">DRAW <div className="card_number">{props.draw}</div></div>
+          return (
+            <div className="draw">
+              DRAW <div className="card_number">{props.draw}</div>
+            </div>
+          );
         } else {
-          return <div className="draw hide"></div>
+          return <div className="draw hide"></div>;
         }
       }
 
@@ -81,7 +86,7 @@
         return (
           <div className="card blackcard">
             <span className="card_text">{props.text}</span>
-            <CardFooter {...props}/>
+            <CardFooter {...props} />
             <div className="card_metadata">
               <Draw {...props} />
               <Pick {...props} />
@@ -92,29 +97,30 @@
 
       function WhiteCard(props) {
         // TODO allow formatting on cards
-        const classes = "card whitecard" + (!!props.selected ? " selected" : "");
+        const classes =
+          "card whitecard" + (!!props.selected ? " selected" : "");
         return (
           <div className={classes}>
             <span className="card_text">{props.text}</span>
-            <CardFooter {...props}/>
+            <CardFooter {...props} />
           </div>
         );
       }
 
       function WhiteCards(props) {
         // TODO watermarks
-        const cards = props.cards.map((card) =>
-          <WhiteCard key={card} text={card} selected={props.selected}/>
-        );
-        return <div className="game_white_cards_binder">{cards}</div>
+        const cards = props.cards.map(card => (
+          <WhiteCard key={card} text={card} selected={props.selected} />
+        ));
+        return <div className="game_white_cards_binder">{cards}</div>;
       }
 
       function RoundHolder(props) {
-        const otherPlays = props.OtherPlays.map((cards) =>
+        const otherPlays = props.OtherPlays.map(cards => (
           <WhiteCards key={cards} cards={cards} />
-        );
+        ));
         return (
-          <div style={{"width": "100%", "height": "100%"}}>
+          <div style={{ width: "100%", height: "100%" }}>
             <div className="game_left_side">
               <div className="game_black_card_wrapper">
                 <span tabIndex="0">The black card for this round is:</span>
@@ -136,14 +142,21 @@
 
       if (window.location.hash.length < 2) {
         ReactDOM.render(
-          <div>You need to specify a round ID in the hash portion of the URL.</div>,
-          document.getElementById('root')
-        )
+          <div>
+            You need to specify a round ID in the hash portion of the URL.
+          </div>,
+          document.getElementById("root")
+        );
       } else if (!self.fetch) {
         ReactDOM.render(
-          <div>You need to use a browser that supports the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API#Browser_compatibility">Fetch API.</a></div>,
-          document.getElementById('root')
-        )
+          <div>
+            You need to use a browser that supports the{" "}
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API#Browser_compatibility">
+              Fetch API.
+            </a>
+          </div>,
+          document.getElementById("root")
+        );
       } else {
         // TODO lifecycle stuff if es6 is worth it?
         var ok = false;
@@ -153,7 +166,7 @@
             return response.json();
           })
           .then(
-            (result) => {
+            result => {
               if (!ok) {
                 if (result.error) {
                   throw new Error(result.error);
@@ -163,18 +176,18 @@
               }
               ReactDOM.render(
                 <RoundHolder {...result} />,
-                document.getElementById('root')
+                document.getElementById("root")
               );
             },
-            (error) => {
-              throw new Error(error)
+            error => {
+              throw new Error(error);
             }
           )
           .catch(error => {
             // TODO better?
             ReactDOM.render(
               <div>Unable to load round: {error.message}</div>,
-              document.getElementById('root')
+              document.getElementById("root")
             );
           });
       }
@@ -183,7 +196,6 @@
       //   <RoundHolder {...json} />,
       //   document.getElementById('root')
       // );
-
     </script>
     <!--
       Note: this page is a great way to try React but it's not suitable for production.

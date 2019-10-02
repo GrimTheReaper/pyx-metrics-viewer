@@ -26,9 +26,10 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"strings"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 var getGameRoundsStmt *sql.Stmt
